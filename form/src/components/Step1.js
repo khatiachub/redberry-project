@@ -1,27 +1,40 @@
-import { useState,useEffect } from "react"
+import { useState,useEffect} from "react"
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom"
 import { useForm } from 'react-hook-form'
 import Header from "./Header";
 
-
 export default function Step1(){
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit,reset, watch, formState: { errors } } = useForm();
     const nav=useNavigate();
-    const location=useLocation();
-    const[value,setValue]=useState({
+    const [image, setImage] = useState([]);
+    const [imgURL, setImgURL] = useState([]);
+
+     const[value,setValue]=useState({
         firstName:'',
         lastName:'',
         textarea:'',
         email:'',
         number:''
 })
+
     const handleChange=(e)=>{
-        console.log(e.target.value)
         const name=e.target.name
         const val=e.target.value
-        setValue({...value,[name]:val})
+        setValue({...value,[name]:val}
+        )
+        setImage([...e.target.files])
     }
-    const onClick=()=>{
+
+    useEffect(()=>{
+        if(image.length<1)return;
+        const newImg=[];
+        image.forEach(item=>newImg.push(URL.createObjectURL(item)
+        ))
+        setImgURL(newImg)
+    },[image])
+
+    const onClick=(e)=>{
         nav('/step2',{state:{
             firstName:value.firstName,
             lastName:value.lastName,
@@ -30,6 +43,7 @@ export default function Step1(){
             number:value.number
         }})
     }
+
     useEffect(() => {
         const data = window.localStorage.getItem('MY_APP_STATE');
         if ( data !== null ) setValue(JSON.parse(data));
@@ -40,7 +54,6 @@ export default function Step1(){
 
     return(
         <div className="form-div">
-            {/* <div className="form-background"> */}
             <div className="form-wraper">
             <Header heading='პირადი ინფო' pages='1\3'/>
             <form className="form" onSubmit={handleSubmit(onClick)}>
@@ -48,13 +61,14 @@ export default function Step1(){
                 <div className="namediv">
                 <label>სახელი</label>
                 <input
-                placeholder="ანზორ"
-                className="input-name"
                 name="firstName"
-                defaultValue={value.firstName}
+                placeholder="ანზორ"
+                className={`input-name${errors.firstName?'red':''}`}
+                value={value.firstName}
                  type="text" 
-                 {...register('firstName',{onChange:(e)=>handleChange(e)})}
+                 {...register('firstName',{onChange:(e)=>handleChange(e)},{required: true, minLength: 2 })}
                  />
+                {errors.firstName && <span>This field is required</span>}
                  <p className="name-criteria">მინიმუმ 2 ასო, ქართული ასოები</p>
                  </div>
                  <div className="namediv">
@@ -72,9 +86,14 @@ export default function Step1(){
                 </div>
                 <div className="image-input-div">
                 <label className="image-label">პირადი ფოტოს ატვირთვა</label>
+                <div onClick={()=>document.querySelector('.image-input').click()}className="image-button">ატვირთვა</div>
                 <input 
+                className="image-input"
+                // onChange={()=>upLoadChange}
+                // ref={hiddenFileInput}
                 type="file"
                 name="image" 
+                accept="image/*"
                 {...register('image',{onChange:(e)=>handleChange(e)})}
                 />
                 </div>
@@ -96,7 +115,7 @@ export default function Step1(){
                 className="input-email"
                 type="email"
                 name="email" 
-                // value={value.email}
+                value={value.email}
                 {...register('email',{onChange:(e)=>handleChange(e)})}
                 />
                 <p className="name-criteria">უნდა მთავრდებოდეს @redberry.ge-ით</p>
@@ -106,23 +125,27 @@ export default function Step1(){
                 className="input-email"
                 type="number" 
                 name="number"
-                // value={value.number}
+                value={value.number}
                 {...register('number',{onChange:(e)=>handleChange(e)})}
                 />
                 <p className="name-criteria">უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</p>
                 <button
+                onClick={reset}
                 type="submit"
                 className="button">შემდეგი</button>
             </form>
-            {/* </div> */}
             </div>
-            {/* <div className="cv-wraper"> */}
-               {/* <li>{value.firstName}</li> */}
-               {/* <li>{value.lastName}</li> */}
-               {/* <li>{value.textarea}</li> */}
-               {/* <li>{value.email}</li> */}
-               {/* <li>{value.number}</li> */}
-            {/* </div> */}
+            <div className="cv-wraper">
+                <div>
+                    <h1>{value.firstName}{value.lastName}</h1>
+                    <h5>{value.email}</h5>
+                    <h5>{value.number}</h5>
+                    <h2></h2>
+                    <p>{value.textarea}</p>
+               </div>
+               { imgURL.map(imageSrc => <img style={{width:200,height:200,objectFit:'contain'}} src={imageSrc} />) }
+            </div>
+            <div></div>
         </div>
     )
 }

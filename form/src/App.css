@@ -41,6 +41,8 @@ textarea{
 .namediv{
     max-width: 371px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 input::placeholder{
     margin-left: 10px;
@@ -87,10 +89,13 @@ textarea::placeholder{
 }
 .image-input-div{
     display: flex;
-    align-items: baseline;
+    align-items:baseline;
     max-width: 320px;
     width: 100%;
     justify-content: space-between;
+}
+.image-input{
+    display: none;
 }
 .button{
     width: 151px;
@@ -104,6 +109,29 @@ textarea::placeholder{
     font-weight: 500;
     font-size: 16px;
     line-height: 19px;
+}
+button{
+    cursor: pointer;
+}
+.red{
+    border: red;
+}
+/* .image-input{ */
+    /* display: none; */
+/* } */
+.image-button{
+    width: 107px;
+    height: 27px;
+    background-color:#0E80BF;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 14px;
+    cursor: pointer;
 }
 .name-criteria{
     line-height: 21px;
@@ -164,6 +192,47 @@ textarea::placeholder{
 *{
     list-style: none;
 }
+/* step2 */
+.exp-button{
+    background: #62A1EB;
+    width: 289px;
+    height: 48px;
+    border-radius: 4px;
+    border: none;
+    margin-top: 45px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.54px;
+    color: #fff;
+}
+.button-back{
+    background-color:#6B40E3;
+    width: 113px;
+    height: 48px;
+    border-radius: 4px;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.54px;
+    color: #fff;
+}
+.buttons-div{
+    display: flex;
+    margin-top: 115px;
+}
+.button-next{
+    margin-top: 0;
+}
+.line{
+    max-width: 798px;
+    width: 100%;
+    height: 1px;
+    background-color: #C1C1C1;
+    margin-top: 58px;
+}
+.text{
+    height: 123px;
+}
 
 /* home */
 .home-wraper{
@@ -198,23 +267,22 @@ textarea::placeholder{
     border-bottom: 1px solid #1A1A1A;
     margin: 0 auto;
 }
-.resium-div{
-    max-width: 363px;
-    width: 100%;
-    height: 60px;
-    background-color: #1A1A1A;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 424px;
-    margin-left: 50%;
-    transform: translateX(-50%);
-}
 .resium-link{
     color: #fff;
     font-weight: 500;
     font-size: 20px;
     line-height: 24px;
     text-decoration: none;
+    max-width: 464px;
+    width: 100%;
+    height: 60px;
+    background-color: #1A1A1A;
+    border-radius: 8px;
+    top: 424px;
+    left: 50%;
+    padding: 18px 60px 18px 60px;
+    transform: translateX(-50%);
+    position: absolute;
+    display: flex;
+    justify-content: center;
 }
