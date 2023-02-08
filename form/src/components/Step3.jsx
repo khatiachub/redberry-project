@@ -2,10 +2,14 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from "react-router-dom"
 import Header from './Header';
+import Cv from './Cv';
+import staricon from '../images/l.png'
+
+
 
 
 export default function Step3(){
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch,reset, formState: { errors } } = useForm();
   const nav=useNavigate();
   const location=useLocation();
 
@@ -15,9 +19,19 @@ export default function Step3(){
     date:'',
     text:''
   })
-
-  const onHandleClick=()=>{
-    nav(-1)
+const[value,setValue]=useState('')
+  const onHandleClicks=()=>{
+    nav('/step2',{state:{
+      firstName:location.state.firstName,
+      lastName:location.state.lastName,
+      textarea:location.state.textarea,
+      email:location.state.email,
+      number:location.state.number,
+      position:state.position,
+      degree:state.degree,
+      date:state.date,
+      text:state.text
+    }})
   }
 
   const handleChange=(e)=>{
@@ -25,14 +39,14 @@ export default function Step3(){
   }
 
   useEffect(() => {
-    const data = window.localStorage.getItem('MY_APP_STATE');
+    const data = window.localStorage.getItem('value');
     if ( data !== null ) setState(JSON.parse(data));
   }, []);
   useEffect(() => {
-    window.localStorage.setItem('MY_APP_STATE', JSON.stringify(state));
+    window.localStorage.setItem('value', JSON.stringify(state));
   }, [state]);
 
-
+const[data,setData]=useState([])
   const onClick=()=>{
     nav('/Resium',{state:{
       firstName:location.state.firstName,
@@ -50,7 +64,20 @@ export default function Step3(){
       date:state.date,
       text:state.text
     }})
+    localStorage.removeItem('value');
   }
+  useEffect(() => {
+    fetch('https://resume.redberryinternship.ge/api/degrees')
+        .then(response => response.json())
+        .then((data)=>{
+          setData(data)
+        });
+}, []);
+
+const position = register('position', { required: true, minLength:2})
+const degree= register('degree',{ required:true})
+const date=register('date',{required:true})
+const text=register('text',{required:true})
   return(
     <div className='form-div'>
     <div className='form-wraper'>
@@ -63,50 +90,125 @@ export default function Step3(){
          className='input-email'
          placeholder='სასწავლებელი'
           type="text" 
-          {...register('position',{onChange:(e)=>handleChange(e)})}
+          {...position}
+          onChange={(e) => {
+            position.onChange(e); 
+            handleChange(e); 
+          }}
           />
-          <p className='name-criteria'>მინიმუმ 2 სიმბოლო</p>
-          <div className='input-name-div'>
-            <div className='namediv'>
-               <label className='email-label' htmlFor="">ხარისხი</label>
-               <select  style={{outline:'none',marginTop:8,height:49}} className='input-name' name="degree" value={state.degree} id="" {...register('degree',{onChange:(e)=>handleChange(e)})}>
-                <option value="">აირჩიეთ ხარისხი</option>
-                <option value="">{}</option>
+          <p 
+          className='name-criteria'>
+            მინიმუმ 2 სიმბოლო
+            </p>
+          <div
+           className='input-name-div'>
+            <div
+            className='namediv'>
+            <label
+            className='email-label'
+             htmlFor="">ხარისხი</label>
+            <select
+            style={{outline:'none',marginTop:8,height:49}} 
+            className='input-name' 
+            name="degree" 
+            value={state.degree} 
+            id="" 
+            {...degree}
+            onChange={(e) => {
+              degree.onChange(e); 
+              handleChange(e); 
+            }}
+            >
+            <option 
+            value="">აირჩიეთ ხარისხი
+            </option>
+              {data.map((element)=>{
+                return(
+                  <>
+                    <option 
+                    value={element.title}>
+                    {element.title}
+                    </option>
+                  </>
+                )
+              })}
                </select>
             </div>
-            <div className='namediv'>
-                <label className='email-label' htmlFor="">დამთავრების რიცხვი</label>
-                <input name='date' value={state.date} type="date" className='input-name'{...register('date',{onChange:(e)=>handleChange(e)})}/>
+            <div
+             className='namediv'>
+                <label
+                className='email-label' 
+                htmlFor="">დამთავრების რიცხვი
+                </label>
+                <input 
+                name='date' 
+                value={state.date}
+                type="date"
+                className='input-name'
+                {...date}
+                onChange={(e) => {
+                  date.onChange(e); 
+                  handleChange(e); 
+                }}
+                  />
             </div>
           </div>
-          <label className='email-label' htmlFor="">განათლების აღწერა</label>
-          <textarea name='text' value={state.text} className='textarea text' placeholder='როლი თანამდებობაზე და ზოგადი აღწერა' {...register('text',{onChange:(e)=>handleChange(e)})}></textarea>
-          <div className='line'></div>
-          <button type='button' className='exp-button'>სხვა სასწავლებლის დამატება</button>
-          <div className='buttons-div'>
-             <button onClick={onHandleClick} type='button' className='button-back'>უკან</button>
-             <button className='button button-next' type='submit'>დასრულება</button>
+          <label
+           className='email-label' 
+           htmlFor="">განათლების აღწერა
+           </label>
+          <textarea
+          {...text}
+          onChange={(e) => {
+            text.onChange(e); 
+            handleChange(e); 
+          }}
+           name='text' 
+           value={state.text} 
+           className='textarea text' 
+           placeholder='როლი თანამდებობაზე და ზოგადი აღწერა'>
+           </textarea>
+          <div className='line'>
+          </div>
+          <button
+           type='button' 
+           className='exp-button'>სხვა სასწავლებლის დამატება
+           </button>
+          <div 
+          className='buttons-div'>
+             <button 
+             onClick={onHandleClicks} 
+             type='button' 
+             className='button-back'>უკან
+             </button>
+             <button 
+              onClick={reset}
+             className='button button-next' 
+             type='submit'>დასრულება
+             </button>
           </div>
        </form>
     </div>
-    <div className='cv-wraper'>
-    <div>
-        <h1>{location.state.firstName}{location.state.lastName}</h1>
-        <h5>{location.state.email}</h5>
-        <h5>{location.state.number}</h5>
-        <h2></h2>
-        <p>{location.state.textarea}</p>
-        <h2></h2>
-        <h5>{location.state.exp}{location.state.edu}</h5>
-        <h6>{location.state.datestart}{location.state.dateend}</h6>
-        <p>{location.state.textareas}</p>
-        <p>{state.position}</p>
-        <p>{state.degree}</p>
-        <p>{state.date}</p>
-        <p>{state.text}</p>
-    </div>
-    {/* { imgURL.map(imageSrc => <img style={{width:200,height:200,objectFit:'contain'}} src={imageSrc} />) } */}
-    </div>
-  </div>
+       <div 
+       className="cv-wraper">
+        <Cv
+         firstName={location.state.firstName}
+         lastName={location.state.lastName}
+         email={location.state.email}
+         number={location.state.number}
+         textarea={location.state.textarea}
+         edu={location.state.edu}
+         exp={location.state.exp}
+         staricon={staricon}
+         datestart={location.state.datestart}
+         dateend={location.state.dateend}
+         textareas={location.state.textareas}
+         position={state.position}
+         degree={state.degree}
+         date={state.date}
+         text={state.text}
+        />
+        </div>
+     </div>
   )
 }

@@ -1,22 +1,27 @@
-import { useForm } from 'react-hook-form'
+import { useForm , Controller} from 'react-hook-form'
 import { useLocation, useNavigate } from "react-router-dom"
 import Header from './Header';
 import '../App.css'
 import { useEffect, useState } from 'react';
+import staricon from '../images/l.png'
+import Cv from './Cv';
+
+
+
 
 export default function Step2(){
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const { register, handleSubmit, watch,reset, formState: { errors,control } } = useForm();
   const nav=useNavigate();
   const location=useLocation();
+  console.log(location.state)
+  const[data,setData]=useState(location.state)
   const[state,setState]=useState({
     exp:'',
     edu:'',
     datestart:'',
     dateend:'',
-    textareas:''
+    textareas:'',
   })
-
-
   const onClick=()=>{
     nav('/Step3',{state:{
       firstName:location.state.firstName,
@@ -28,12 +33,22 @@ export default function Step2(){
       edu:state.edu,
       datestart:state.datestart,
       dateend:state.dateend,
-      textareas:state.textareas
+      textareas:state.textareas,
     }})
+    
   }
-
-  const onHandleClick=()=>{
-    nav(-1)
+  const onHandleClicks=()=>{
+    nav('/Step1',{state:{
+      exp:state.exp,
+      edu:state.edu,
+      datestart:state.datestart,
+      dateend:state.dateend,
+      textareas:state.textareas,
+      position:location.state.position,
+      degree:location.state.degree,
+      date:location.state.date,
+      text:location.state.text
+    }})
   }
 
   const handleChange=(e)=>{
@@ -43,15 +58,23 @@ export default function Step2(){
   }
 
   useEffect(() => {
-    const data = window.localStorage.getItem('MY_APP_STATE');
+    const data = window.localStorage.getItem('value');
     if ( data !== null ) setState(JSON.parse(data));
   }, []);
   useEffect(() => {
-    window.localStorage.setItem('MY_APP_STATE', JSON.stringify(state));
+    window.localStorage.setItem('value', JSON.stringify(state));
   }, [state]);
+
+
+  const exp = register('exp', { required: true, minLength:2})
+  const edu= register('edu',{ required:true, minLength:2})
+  const datestart=register('datestart',{required:true})
+  const dateend=register('dateend',{required:true})
+  const textareas=register('textareas',{required:true})
 
   return(
       <div className='form-div'>
+
         <div className='form-wraper'>
            <Header heading='გამოცდილება' pages='2\3'/>
            <form className='form' action="" onSubmit={handleSubmit(onClick)}>
@@ -62,7 +85,11 @@ export default function Step2(){
              className='input-email'
              placeholder='დეველოპერი, დიზაინერი, ა.შ.'
               type="text" 
-              {...register('exp',{onChange:(e)=>handleChange(e)})}
+              {...exp}
+              onChange={(e) => {
+                exp.onChange(e); 
+                handleChange(e); 
+              }}
               />
               <p className='name-criteria'>მინიმუმ 2 სიმბოლო</p>
               <label className='email-label' htmlFor="">დამსაქმებელი</label>
@@ -72,7 +99,11 @@ export default function Step2(){
              className='input-email'
              placeholder='დამსაქმებელი'
               type="text" 
-              {...register('edu',{onChange:(e)=>handleChange(e)})}
+              {...edu}
+              onChange={(e) => {
+                edu.onChange(e); 
+                handleChange(e); 
+              }}
               />
               <p className='name-criteria'>მინიმუმ 2 სიმბოლო</p>
               <div className='input-name-div'>
@@ -83,7 +114,11 @@ export default function Step2(){
                    name='datestart'
                     type="date" 
                     className='input-name'
-                    {...register('datestart',{onChange:(e)=>handleChange(e)})}
+                    {...datestart}
+                    onChange={(e) => {
+                      datestart.onChange(e); 
+                      handleChange(e); 
+                    }}
                     />
                 </div>
                 <div className='namediv'>
@@ -93,7 +128,11 @@ export default function Step2(){
                     name='dateend'
                     type="date" 
                     className='input-name'
-                    {...register('dateend',{onChange:(e)=>handleChange(e)})}
+                    {...dateend}
+                    onChange={(e) => {
+                      dateend.onChange(e); 
+                      handleChange(e); 
+                    }}
                     />
                 </div>
               </div>
@@ -103,30 +142,46 @@ export default function Step2(){
               name='textareas'
                className='textarea text' 
                placeholder='როლი თანამდებობაზე და ზოგადი აღწერა'
-               {...register('textareas',{onChange:(e)=>handleChange(e)})}
+               {...textareas}
+               onChange={(e) => {
+                textareas.onChange(e); 
+                handleChange(e); 
+              }}
                />
               <div className='line'></div>
               <button type='button' className='exp-button'>მეტი გამოცდილების დამატება</button>
               <div className='buttons-div'>
-                 <button onClick={onHandleClick} type='button' className='button-back'>უკან</button>
-                 <button className='button button-next' type='submit'>შემდეგი</button>
+                 <button onClick={onHandleClicks} type='button' className='button-back'>უკან</button>
+                 <button onClick={reset} className='button button-next' type='submit'>შემდეგი</button>
               </div>
            </form>
         </div>
-        <div className='cv-wraper'>
-        <div>
-            <h1>{location.state.firstName}{location.state.lastName}</h1>
-            <h5>{location.state.email}</h5>
-            <h5>{location.state.number}</h5>
-            <h2></h2>
-            <p>{location.state.textarea}</p>
-            <h2></h2>
-            <h5>{state.exp}{state.edu}</h5>
-            <h6>{state.datestart}{state.dateend}</h6>
-            <p>{state.textareas}</p>
+      <div>
         </div>
-        {/* { imgURL.map(imageSrc => <img style={{width:200,height:200,objectFit:'contain'}} src={imageSrc} />) } */}
-        </div>
-      </div>
+        <div className="cv-wraper">
+       <Cv
+         firstName={location.state.firstName}
+         lastName={location.state.lastName}
+         email={location.state.email}
+         number={location.state.number}
+         textarea={location.state.textarea}
+         edu={state.edu}
+         exp={state.exp}
+         staricon={staricon}
+         datestart={state.datestart}
+         dateend={state.dateend}
+         textareas={state.textareas}
+        />
+        {data===null?null:
+         <div className='cv-block'>
+             <div className='cv-wrap'>
+             {location.state.position?<h2 style={{marginTop:50}} className='cv-about'>განათლება</h2>:null}
+             <h5 className='cv-number'>{location.state.position} {location.state.degree}</h5>
+             <h6 className='cv-dates'>{location.state.date}</h6>
+             <p className='cv-paragraph'>{location.state.text}</p>
+             </div>
+         </div>}
+     </div>
+  </div>
   )
 }
