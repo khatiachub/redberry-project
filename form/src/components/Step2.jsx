@@ -35,7 +35,6 @@ export default function Step2(){
       dateend:state.dateend,
       textareas:state.textareas,
     }})
-    
   }
   const onHandleClicks=()=>{
     nav('/Step1',{state:{
