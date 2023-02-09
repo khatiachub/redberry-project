@@ -1,6 +1,7 @@
 {
   "name": "form",
   "version": "0.1.0",
+  "homepage": "https://khatiachub.github.io/redberry-project/",
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^2.9.10",
@@ -16,6 +17,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -40,6 +43,7 @@
     ]
   },
   "devDependencies": {
-    "file-loader": "^6.2.0"
+    "file-loader": "^6.2.0",
+    "gh-pages": "^5.0.0"
   }
 }

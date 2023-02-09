@@ -73,8 +73,6 @@ function Step1(){
         if ( data !== null ) setValues(JSON.parse(data));
       }, []);
 
-
-
       const firstName = register('firstName', { required: true,pattern: /^[ა-ჰა-ჰ]+$/i, minLength:2})
       const lastName= register('lastName',{pattern: /^[ა-ჰა-ჰ]+$/i, required:true, minLength:2})
       const images=register('image',{required:true})
@@ -195,7 +193,7 @@ function Step1(){
                            <p className="cv-textarea">{value.textarea}</p>
                       </div>
                       {/* { imgURL.map(imageSrc => <img className="cv-photo" src={imageSrc} />)} */}
-                      <img className="cv-photo" src={url}/>
+                      {/* <img className="cv-photo" src={url}/> */}
                       </div>
                     {data===null?null:
                    <>
