@@ -50,6 +50,10 @@ const [isValid, setIsValid] = useState(true);
             textarea:value.textarea,
             email:value.email,
             number:value.number,
+            position:location.state.position,
+            degree:location.state.degree,
+            date:location.state.date,
+            text:location.state.text
         }})
     }
 
