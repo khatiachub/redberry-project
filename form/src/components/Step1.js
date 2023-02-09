@@ -8,13 +8,15 @@ import greenicon from '../images/i.png'
 import staricon from '../images/l.png'
 import Cv from "./Cv";
 
-// import Storage from "./Storage";
+
 
 export default function Step1(){
     const { register, handleSubmit,reset,control,trigger, formState: { errors },setValue,setFocus } = useForm({mode: "all"});
     const nav=useNavigate();
-    const [image, setImage] = useState([]);
-    const [imgURL, setImgURL] = useState([]);
+      // const[image,setImage]=useState([])
+      // const[imgURL,setImgURL]=useState([])
+
+    
     const location=useLocation()
     console.log(location);
     const[data,setData]=useState(location.state)
@@ -26,24 +28,34 @@ export default function Step1(){
         number:'',
         image:'',
 })
-const [isValid, setIsValid] = useState(true);
+// const [url, setUrl] =useState('');
+// 
+// const uploader = (file) =>{
+// const reader = new FileReader();
+// reader.addEventListener('load', ()=>{
+    // localStorage.setItem('recent-image',reader.result)
+// })
+// reader.readAsDataURL(file);
+// }
+// useEffect(() => {
+// setUrl(localStorage.getItem('recent-image'));
+// }, [])
+// 
+// 
+
+
+
     const handleChange=(e)=>{
         const name=e.target.name
         const val=e.target.value
         setValues({...value,[name]:val}
         )
-        setImage([...e.target.files])
-        setIsValid(value.length>2);
-    }
-    useEffect(()=>{
-        if(image.length<1)return;
-        const newImg=[];
-        image.forEach(item=>newImg.push(URL.createObjectURL(item)
-        ))
-        setImgURL(newImg)
-    },[image])
+        // uploader(e.target.files[0])
 
-    const onClick=(data)=>{
+        // setImage([...e.target.files])
+      }
+    
+    const onClick=()=>{
         nav('/step2',{state:{
             firstName:value.firstName,
             lastName:value.lastName,
@@ -56,7 +68,6 @@ const [isValid, setIsValid] = useState(true);
             text:location.state.text
         }})
     }
-
     useEffect(() => {
         const data = window.localStorage.getItem('value');
         if ( data !== null ) setValues(JSON.parse(data));
@@ -83,7 +94,7 @@ const [isValid, setIsValid] = useState(true);
                 <input
                  name="firstName"
                  placeholder="ანზორ"
-                 className={`input-name ${isValid?'green':'red'}`}
+                 className={`input-name ${errors.firstName?'red':'input-name'}`}
                  value={value.firstName}
                  type="text" 
                  {...firstName}
@@ -109,8 +120,6 @@ const [isValid, setIsValid] = useState(true);
                     lastName.onChange(e);
                     handleChange(e); 
                   }}
-                  setFocus
-
                 />
                 <img className={`red-icon ${errors.lastName?'red-icon-block':'red-icon'}`} src={redicon} alt="red icon"/>
                 <p className="name-criteria">მინიმუმ 2 ასო, ქართული ასოები</p>
@@ -180,16 +189,27 @@ const [isValid, setIsValid] = useState(true);
             </form>
             </div>
             <div className="cv-wraper">
-                <Cv
-                  firstName={value.firstName}
-                  lastName={value.lastName}
-                  email={value.email}
-                  number={value.number}
-                  textarea={value.textarea}
-                  staricon={staricon}
-                  // imgURL={imgURL}
-                  // location={location.state}
-                  />
+                {/* <Cv */}
+                  {/* // firstName={value.firstName} */}
+                  {/* // lastName={value.lastName} */}
+                  {/* // email={value.email} */}
+                  {/* // number={value.number} */}
+                  {/* // textarea={value.textarea} */}
+                  {/* // staricon={staricon} */}
+                  {/* // imgURL={imgURL} */}
+                  {/* // location={location.state} */}
+                  {/* /> */}
+                  <div className="cv-block">
+                      <div className="cv-wrap">
+                           <h1 className="cv-name">{value.firstName} {value.lastName}</h1>
+                           <h5 className="cv-email">{value.email}</h5>
+                           <h5 className="cv-number">{value.number}</h5>
+                           {value.textarea?<h2 className="cv-about">ჩემს შესახებ</h2>:null}
+                           <p className="cv-textarea">{value.textarea}</p>
+                      </div>
+                      {/* { imgURL.map(imageSrc => <img className="cv-photo" src={imageSrc} />)} */}
+                      {/* <img src={url}/> */}
+                      </div>
                     {data===null?null:
                    <>
                   <div className='cv-block'>

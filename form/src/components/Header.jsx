@@ -5,10 +5,7 @@ export default function Header(props){
     const nav=useNavigate()
     const handleClick=()=>{
         nav('/');
-        // localStorage.removeItem('MY_APP_STATE')
-        // localStorage.removeItem('val')
-        // localStorage.removeItem('state')
-        // localStorage.removeItem('value')
+        localStorage.removeItem('value')
 
     }
     return(

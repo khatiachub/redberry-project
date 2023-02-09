@@ -9,8 +9,6 @@ export default function Resium(){
   const handleClick=()=>{
       nav('/');
       localStorage.removeItem('value')
-     //  localStorage.removeItem('val')
-     //  localStorage.removeItem('state')
   }
 
   return(

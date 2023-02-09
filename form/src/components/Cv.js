@@ -12,7 +12,6 @@ export default function Cv(props){
                  {props.textarea?<h2 className="cv-about">ჩემს შესახებ</h2>:null}
                  <p className="cv-textarea">{props.textarea}</p>
             </div>
-            {/* { props.imgURL.map(imageSrc => <img className="cv-photo" src={imageSrc} />)} */}
             </div>
             {props.textarea?<div className="cv-line"></div>:null}
             <div className='cv-block'>
