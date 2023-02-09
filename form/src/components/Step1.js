@@ -10,7 +10,7 @@ import Cv from "./Cv";
 
 
 
-export default function Step1(){
+function Step1(){
     const { register, handleSubmit,reset,control,trigger, formState: { errors },setValue,setFocus } = useForm({mode: "all"});
     const nav=useNavigate();
       // const[image,setImage]=useState([])
@@ -28,20 +28,20 @@ export default function Step1(){
         number:'',
         image:'',
 })
-// const [url, setUrl] =useState('');
-// 
-// const uploader = (file) =>{
-// const reader = new FileReader();
-// reader.addEventListener('load', ()=>{
-    // localStorage.setItem('recent-image',reader.result)
-// })
-// reader.readAsDataURL(file);
-// }
-// useEffect(() => {
-// setUrl(localStorage.getItem('recent-image'));
-// }, [])
-// 
-// 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -50,31 +50,28 @@ export default function Step1(){
         const val=e.target.value
         setValues({...value,[name]:val}
         )
-        // uploader(e.target.files[0])
-
-        // setImage([...e.target.files])
       }
-    
-    const onClick=()=>{
+      const onClick=()=>{
         nav('/step2',{state:{
-            firstName:value.firstName,
-            lastName:value.lastName,
-            textarea:value.textarea,
-            email:value.email,
-            number:value.number,
-            position:location.state.position,
-            degree:location.state.degree,
-            date:location.state.date,
-            text:location.state.text
-        }})
+          firstName:value.firstName,
+          lastName:value.lastName,
+          textarea:value.textarea,
+          email:value.email,
+          number:value.number,
+          // position:location.state.position,
+          // degree:location.state.degree,
+          // date:location.state.date,
+          // text:location.state.text
+      }})  
     }
+    
+    useEffect(() => {
+      window.localStorage.setItem('value', JSON.stringify(value));
+    }, [value]);
     useEffect(() => {
         const data = window.localStorage.getItem('value');
         if ( data !== null ) setValues(JSON.parse(data));
       }, []);
-    useEffect(() => {
-        window.localStorage.setItem('value', JSON.stringify(value));
-      }, [value]);
 
 
 
@@ -189,16 +186,6 @@ export default function Step1(){
             </form>
             </div>
             <div className="cv-wraper">
-                {/* <Cv */}
-                  {/* // firstName={value.firstName} */}
-                  {/* // lastName={value.lastName} */}
-                  {/* // email={value.email} */}
-                  {/* // number={value.number} */}
-                  {/* // textarea={value.textarea} */}
-                  {/* // staricon={staricon} */}
-                  {/* // imgURL={imgURL} */}
-                  {/* // location={location.state} */}
-                  {/* /> */}
                   <div className="cv-block">
                       <div className="cv-wrap">
                            <h1 className="cv-name">{value.firstName} {value.lastName}</h1>
@@ -208,7 +195,7 @@ export default function Step1(){
                            <p className="cv-textarea">{value.textarea}</p>
                       </div>
                       {/* { imgURL.map(imageSrc => <img className="cv-photo" src={imageSrc} />)} */}
-                      {/* <img src={url}/> */}
+                      <img className="cv-photo" src={url}/>
                       </div>
                     {data===null?null:
                    <>
@@ -233,7 +220,4 @@ export default function Step1(){
             </div>
     )
 }
-
-
-
-
+export default Step1
