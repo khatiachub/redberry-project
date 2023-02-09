@@ -29,22 +29,6 @@ function Step1(){
         image:'',
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     const handleChange=(e)=>{
         const name=e.target.name
         const val=e.target.value
